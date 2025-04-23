@@ -1,0 +1,3 @@
+#I think we could add here pycache
+__pycache__/
+.pyc
