@@ -16,11 +16,24 @@ W ramach projektu zrealizowano następujące zadania:
 - Optymalizacja funkcji testowych, w szczególności funkcji Rastrigina, z wykorzystaniem bibliotek zewnętrznych
 - Analiza porównawcza efektywności wybranych konfiguracji algorytmu
 
-## 2. Funkcje testowe
+## 2. Wykorzystane technologie
+W projekcie wykorzystano następujące technologie:
+- **Python** - główny język programowania
+- **PyGAD** - biblioteka do tworzenia algorytmów genetycznych i trenowania algorytmow uczenia maszynowego
+- **NumPy** - biblioteka do obliczeń numerycznych, manipulacji macierzami i wektorami
+- **Matplotlib** - biblioteka do tworzenia wykresów i wizualizacji
+- **Pandas** - biblioteka do analizy danych i manipulacji strukturami danych
+- **SQLite** - lekka baza danych do przechowywania wyników
+- **Tkinter** - biblioteka do tworzenia interfejsu graficznego
+- **benchmark_functions** - biblioteka zawierająca implementacje funkcji testowych
+- **opfunu** - biblioteka z funkcjami testowymi CEC
+
+
+## 3. Funkcje testowe
 
 W projekcie wykorzystano funkcję Rastrigina jako główną funkcję testową do oceny działania algorytmu genetycznego.
 
-### 2.1 Funkcja Rastrigina
+### 3.1 Funkcja Rastrigina
 
 Funkcja Rastrigina jest nieliniową funkcją stosowaną do testowania algorytmów optymalizacyjnych. Jest trudna do optymalizacji ze względu na dużą liczbę lokalnych minimów, co czyni ją dobrym benchmarkiem dla algorytmów genetycznych.
 
@@ -34,14 +47,16 @@ Funkcja ma globalne minimum równe 0 w punkcie x = (0, 0, ..., 0). Typowy zakres
 
 W naszym projekcie skupiliśmy się na optymalizacji funkcji Rastrigina w przestrzeni 10-wymiarowej, co stanowi znaczące wyzwanie dla algorytmu optymalizacyjnego.
 
-## 3. Implementacja algorytmu genetycznego
+## 4. Implementacja algorytmu genetycznego
 
-### 3.1 Reprezentacja binarna
+### 4.1 Reprezentacja binarna
 
 W reprezentacji binarnej każdy osobnik jest zakodowany jako ciąg bitów (0 i 1). Parametry konfiguracyjne dla tej reprezentacji to:
 - `init_range_low = 0`
 - `init_range_high = 2` 
 - `gene_type = int`
+Wszystkie parametry przekazywane są do PyGAD poprzez tworzenie instancji GA i mogą być dowolnie modyfikowane. 
+
 
 Dodatkowo zaimplementowano funkcję dekodującą, która przekształca reprezentację binarną na wartości rzeczywiste:
 
@@ -71,7 +86,7 @@ def decode_binary(binary_solution, num_variables, variable_range):
 
 W naszej implementacji dla funkcji Rastrigina z 10 wymiarami, wykorzystaliśmy 20 bitów na zmienną, co daje łącznie 200 bitów na osobnika. Taka precyzja pozwala na dokładne przeszukanie przestrzeni rozwiązań.
 
-### 3.2 Reprezentacja rzeczywista
+### 4.2 Reprezentacja rzeczywista
 
 W reprezentacji rzeczywistej każdy osobnik jest zakodowany bezpośrednio jako wektor liczb zmiennoprzecinkowych. Parametry konfiguracyjne dla tej reprezentacji to:
 - `init_range_low = dolna_granica_zakresu` (w przypadku funkcji Rastrigina: -5.12)
@@ -80,31 +95,31 @@ W reprezentacji rzeczywistej każdy osobnik jest zakodowany bezpośrednio jako w
 
 Reprezentacja rzeczywista eliminuje potrzebę dekodowania, co może potencjalnie zwiększyć wydajność algorytmu.
 
-### 3.3 Operatory genetyczne
+### 4.3 Operatory genetyczne
 
-#### 3.3.1 Metody selekcji
+#### 4.3.1 Metody selekcji
 - **Selekcja turniejowa (tournament)**: Losowy wybór k osobników, z których najlepszy zostaje wybrany jako rodzic
 - **Koło ruletki (rws)**: Prawdopodobieństwo wyboru proporcjonalne do wartości funkcji przystosowania
 - **Selekcja losowa (random)**: Losowy wybór osobników bez uwzględnienia ich jakości
 
-#### 3.3.2 Metody krzyżowania dla reprezentacji binarnej
+#### 4.3.2 Metody krzyżowania dla reprezentacji binarnej
 - **Krzyżowanie jednopunktowe**: Wymiana fragmentów chromosomów od losowo wybranego punktu
 - **Krzyżowanie dwupunktowe**: Wymiana fragmentów chromosomów między dwoma losowo wybranymi punktami
 - **Krzyżowanie jednorodne**: Każdy gen ma określone prawdopodobieństwo dziedziczenia od jednego z rodziców
 
-#### 3.3.3 Metody krzyżowania dla reprezentacji rzeczywistej
+#### 4.3.3 Metody krzyżowania dla reprezentacji rzeczywistej
 - **Krzyżowanie arytmetyczne**: Liniowa kombinacja genów rodziców z losowym współczynnikiem α
 - **Krzyżowanie mieszające-alfa**: Losowe wartości z przedziału rozszerzonego o parametr α
 - **Krzyżowanie mieszające-alfa-beta**: Rozszerzenie poprzedniego z dwoma parametrami α i β
 - **Krzyżowanie liniowe**: Tworzenie potomków jako liniowych kombinacji rodziców z różnymi wagami
 - **Krzyżowanie uśredniające**: Tworzenie potomka przez uśrednienie wartości genów rodziców
 
-#### 3.3.4 Metody mutacji
+#### 4.3.4 Metody mutacji
 - **Mutacja losowa (random)**: Losowa zmiana wartości wybranych genów
 - **Mutacja zamiany (swap)**: Zamiana miejscami wartości dwóch wybranych genów
 - **Mutacja Gaussa**: Dodanie do wartości genu liczby losowej z rozkładu normalnego (dla reprezentacji rzeczywistej)
 
-## 4. Przeprowadzone eksperymenty i wyniki
+## 5. Przeprowadzone eksperymenty i wyniki
 
 W ramach projektu przeprowadziliśmy eksperymenty z funkcją Rastrigina w 10 wymiarach, testując reprezentację binarną z następującymi parametrami:
 - Rozmiar populacji: 50
@@ -114,7 +129,7 @@ W ramach projektu przeprowadziliśmy eksperymenty z funkcją Rastrigina w 10 wym
 - Metoda krzyżowania: single_point (jednopunktowe)
 - Metoda mutacji: random (losowa)
 
-### 4.1 Wyniki eksperymentu dla reprezentacji binarnej
+### 5.1 Wyniki eksperymentu dla reprezentacji binarnej
 
 Przeprowadzony eksperyment dla reprezentacji binarnej pozwolił wygenerować wykres zbieżności, który został zapisany jako `Rastrigin_-__Binary_results.png`:
 
@@ -129,7 +144,7 @@ Szczegółowe wyniki dla reprezentacji binarnej:
 - Najlepsza wartość funkcji celu: 38.9 - 59.7
 - Zaobserwowane rozwiązanie: wektor 10-wymiarowy z wartościami w zakresie [-4.1, 4.1]
 
-### 4.2 Obserwacje i wnioski
+### 5.2 Obserwacje i wnioski
 
 Na podstawie przeprowadzonych eksperymentów można sformułować następujące obserwacje:
 
@@ -146,7 +161,7 @@ Na podstawie przeprowadzonych eksperymentów można sformułować następujące 
    - Czas wykonania jest akceptowalny dla funkcji 10-wymiarowej
    - Konwergencja algorytmu jest widoczna już po kilkudziesięciu generacjach
 
-## 5. Wnioski
+## 6. Wnioski
 
 Przeprowadzone eksperymenty z optymalizacją funkcji Rastrigina przy użyciu biblioteki PyGAD potwierdzają, że algorytmy genetyczne są skutecznym narzędziem do znajdowania globalnych minimów funkcji wielomodalnych. Implementacja z wykorzystaniem reprezentacji binarnej okazała się efektywna, choć wymaga dokładnego dostrojenia parametrów.
 
@@ -154,7 +169,7 @@ Biblioteka PyGAD oferuje elastyczne możliwości konfiguracji algorytmu genetycz
 
 W przyszłych badaniach warto byłoby przeprowadzić szersze porównanie z reprezentacją rzeczywistą oraz przetestować większą liczbę kombinacji operatorów genetycznych, aby lepiej zrozumieć ich wpływ na wydajność algorytmu w rozwiązywaniu specyficznych problemów optymalizacyjnych.
 
-## 6. Podsumowanie
+## 7. Podsumowanie
 
 Projekt wykazał, że biblioteka PyGAD jest elastycznym narzędziem do implementacji algorytmów genetycznych z różnymi konfiguracjami. Zaimplementowany algorytm z reprezentacją binarną skutecznie optymalizuje funkcję Rastrigina w przestrzeni 10-wymiarowej.
 
